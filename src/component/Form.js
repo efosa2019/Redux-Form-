@@ -1,96 +1,66 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import Countries from './Countries'
 
-const Form = props => {
+const validate = values => {
+    const errors = {}
+    if (!values.firstName) {
+      errors.firstName = 'Required'
+    } else if (values.firstName.length < 2) {
+      errors.firstName = 'Minimum be 2 characters or more'
+    }
+    if (!values.email) {
+      errors.email = 'Required'
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      errors.email = 'Invalid email address'
+    }
+    if (!values.lastName) {
+        errors.lastName = 'Required'
+      } else if (values.lastName.length < 2) {
+        errors.lastName = 'Minimum be 2 characters or more'
+      }
+    return errors
+  }
+
+const renderField = ({ input, label,  type, meta: { touched, error, warning } }) => (
+    <div>
+      <label className="control-label">{label}</label>
+      <div>
+        <input {...input} placeholder={label} type={type} className="form-control" />
+        {touched && ((error && <span className="text-danger">{error}</span>) || (warning && <span>{warning}</span>))}
+      </div>
+    </div>
+  )
+
+let FormCode = props => {
   const { handleSubmit, pristine, reset, submitting } = props;
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>First Name</label>
-        <div>
-          <Field
-            name="firstName"
-            component="input"
-            type="text"
-            placeholder="First Name"
-          />
-        </div>
+    <form onSubmit={ handleSubmit }>
+      <div className="form-group">
+        <Field name="firstName" component={renderField} label="First Name" />
+      </div>
+      <div className="form-group">
+        <Field name="lastName" component={renderField} label="Last Name" />
+      </div>
+      <div className="form-group">
+        <Field name="email" component={renderField} label="Email" />
       </div>
       <div>
-        <label>Last Name</label>
-        <div>
-          <Field
-            name="lastName"
-            component="input"
-            type="text"
-            placeholder="Last Name"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Email</label>
-        <div>
-          <Field
-            name="email"
-            component="input"
-            type="email"
-            placeholder="Email"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Sex</label>
-        <div>
-          <label>
-            <Field name="sex" component="input" type="radio" value="male" />
-            {' '}
-            Male
-          </label>
-          <label>
-            <Field name="sex" component="input" type="radio" value="female" />
-            {' '}
-            Female
-          </label>
-        </div>
-      </div>
-      <div>
-        <label>Favorite Color</label>
-        <div>
-          <Field name="favoriteColor" component="select">
-            <option />
-            <option value="ff0000">Red</option>
-            <option value="00ff00">Green</option>
-            <option value="0000ff">Blue</option>
-          </Field>
-        </div>
-      </div>
-      <div>
-        <label htmlFor="employed">Employed</label>
-        <div>
-          <Field
-            name="employed"
-            id="employed"
-            component="input"
-            type="checkbox"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Notes</label>
-        <div>
-          <Field name="notes" component="textarea" />
-        </div>
-      </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting}>Submit</button>
+      <label>Choose Country</label>
+         <Countries />
+         </div>
+      <div className="form-group">
+        <button type="submit" disabled={pristine || submitting} className="btn btn-primary">Submit</button>
         <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
+        Reset Info
         </button>
       </div>
     </form>
-  );
-};
+  )
+}
+FormCode = reduxForm({
+  form: 'contact',
+  validate,
+})(FormCode);
 
-export default reduxForm({
-  form: 'contact', // a unique identifier for this form
-})(Form);
+export default FormCode;
