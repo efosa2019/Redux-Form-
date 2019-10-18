@@ -1,9 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
 import App from './App';
+import FormCode from './component/Form';
+import './setupTest';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+
+let wrapper;
+beforeEach(() => {
+    wrapper = shallow(<App />);
+});
+
+describe('<App /> rendering', () => {
+    it('should render one <h1>', () => {
+        expect(wrapper.find('h1')).toHaveLength(1);
+    });
+it('should render one <FormCode>', () => {
+        expect(wrapper.find(FormCode)).toHaveLength(1);
+    });
+   
 });

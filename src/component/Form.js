@@ -1,24 +1,26 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Countries from './Countries'
+import './Form.css';
 
 const validate = values => {
     const errors = {}
-    if (!values.firstName) {
-      errors.firstName = 'Required'
-    } else if (values.firstName.length < 2) {
-      errors.firstName = 'Minimum be 2 characters or more'
+    if (!values.personalNum) {
+      errors.personalNum = 'Required'
+    } else if (isNaN(Number(values.personalNum))) {
+      errors.personalNum = 'Must be numbers'
+    }
+    if (!values.phoneNum) {
+      errors.phoneNum = 'Required'
+    } else if (isNaN(Number(values.phoneNum))) {
+      errors.phoneNum = 'Must be numbers'
     }
     if (!values.email) {
       errors.email = 'Required'
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
       errors.email = 'Invalid email address'
     }
-    if (!values.lastName) {
-        errors.lastName = 'Required'
-      } else if (values.lastName.length < 2) {
-        errors.lastName = 'Minimum be 2 characters or more'
-      }
+    
     return errors
   }
 
@@ -36,22 +38,17 @@ let FormCode = props => {
   const { handleSubmit, pristine, reset, submitting } = props;
   return (
     <form onSubmit={ handleSubmit }>
-      <div className="form-group">
-        <Field name="firstName" component={renderField} label="First Name" />
-      </div>
-      <div className="form-group">
-        <Field name="lastName" component={renderField} label="Last Name" />
-      </div>
-      <div className="form-group">
-        <Field name="email" component={renderField} label="Email" />
-      </div>
+      <div className="form-group"> 
+      <Field name="personalNum" component={renderField}label="Personal Number" />
+      <Field name="phoneNum" component={renderField} label="Phone Number" />
+      <Field name="email" component={renderField} label="Email" />
+
       <div>
       <label>Choose Country</label>
          <Countries />
          </div>
-      <div className="form-group">
-        <button type="submit" disabled={pristine || submitting} className="btn btn-primary">Submit</button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
+        <button type="submit" disabled={pristine || submitting} className="btn">Submit</button>
+        <button type="button" disabled={pristine || submitting} className="btn" onClick={reset}>
         Reset Info
         </button>
       </div>
@@ -59,7 +56,7 @@ let FormCode = props => {
   )
 }
 FormCode = reduxForm({
-  form: 'contact',
+  form: 'contacts',
   validate,
 })(FormCode);
 

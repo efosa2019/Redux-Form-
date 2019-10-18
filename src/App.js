@@ -1,5 +1,6 @@
 import React from 'react';
 import FormCode from './component/Form';
+import './App.css';
 
 class App extends React.Component {
   submit(value) {
@@ -9,7 +10,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <h3 className="jumbotron">Form Validation</h3>
+        <h1>Form Validation </h1>
         <FormCode onSubmit={this.submit} />
       </div>
       
