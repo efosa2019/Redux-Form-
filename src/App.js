@@ -10,7 +10,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Form Validation </h1>
+        <h1>Form Validation </h1> 
         <FormCode onSubmit={this.submit} />
       </div>
       

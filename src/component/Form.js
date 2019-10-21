@@ -12,8 +12,8 @@ const validate = values => {
     }
     if (!values.phoneNum) {
       errors.phoneNum = 'Required'
-    } else if (isNaN(Number(values.phoneNum))) {
-      errors.phoneNum = 'Must be numbers'
+    } else if (!/^(0|[0-9][0-9]{9})$/i.test(values.phoneNum)) {
+      errors.phoneNum = 'Invalid phone number'
     }
     if (!values.email) {
       errors.email = 'Required'
